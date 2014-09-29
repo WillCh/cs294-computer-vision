@@ -1,0 +1,311 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+<title>proj3 of cs294 Haoyu Chen </title>
+
+</head>
+<style>
+
+body {
+	
+	font: normal 100% Helvetica, Arial, sans-serif;
+	}
+	
+.positon2{ position:absolute; width:990px; left:99%; margin-left:-499px; overflow:hidden; position:fixed !important;bottom:0px !important;position:absolute;}
+ 
+ 
+.btm_aw{ height:51px; bottom:0px;}
+ 
+ 
+*html .btm_aw{top:expression(eval((document.compatMode&&document.compatMode=="CSS1Compat")?documentElement.scrollTop+documentElement.clientHeight-this.clientHeight-1:document.body.scrollTop+document.body.clientHeight-this.clientHeight-1)); display:inline; white-space:nowrap;}
+ 
+ 
+.btm_aw_inner{width:1003px; height:51px;}
+ 
+ 
+*html .btm_aw_inner{width:1009px; height:51px;}
+ 
+</style>
+
+
+
+<body>
+	<h1>CS294 Project 3 -- Fun with Frequencies! <img src = "images/UCB.jpg" align ="top" height = 64> </h1>
+	<hr /> 
+	<h3>author: Haoyu Chen <small> <a href="mailto:haoyuchen@berkeley.edu" title="haoyuchen_AT_berkeley.edu"> contact me </a> </small></h3>
+	<h2>1 Introduction of the project</h2>
+	<img src ="images/cover.jpg" align="right", style="width: 35%", title = "cover pic">
+	<font size=4><p>In this project, I implemented hybrid images, Gaussian and Laplacian stacks, and multiresolution blending. 
+		The project details can be found at: <a href="http://inst.eecs.berkeley.edu/~cs194-26/fa14/hw/proj3-frequencies/index.html" title="project link"> project </a>. </h2>
+	<font size=4><p>Hybrid images are described in the SIGGRAPH 2006 <a href="http://cvcl.mit.edu/publications/OlivaTorralb_Hybrid_Siggraph06.pdf" title="paper link"> paper </a>
+	by Oliva, Torralba, and Schyns. It is a static images which changes with different viewing distance.
+	It is constructed by two kinds of images: the high frequency and low frequency one. When you watch it
+	with small distance, the high frequency image would domain, however, when you are far from the image,
+	the low frequency will domain.
+	</p>
+	<p>
+	The Gaussian and Laplacian stacks are the special method to store the figures. In this stack, we store the images after filtered by Laplacian filter in the
+	middle levels, i,e, we keep the high frequency part of the image. And in the bottom level, we store the blurred image, which keep the low frequency. In
+	 this way, we can recovery the original image by adding low frequency and high frequency iteratively. By applicating this stack to some images, 
+	 we can find some interesting details hidden in them.</p>
+	<p>
+	The multiresolution blending is an application of the Gaussian and Laplacian stack. It blends two images in the each level at their Gaussian and Laplacian
+	stacks, then recovers the blending image from the new stack. This technology can keep the high frequency (the details) and low frequency (the shadow) for
+	both input images.</p>
+	<p>
+	In this web, the process and the results for the three technologies above will be illustrated. Their fast links are:
+	</p></font>
+	<table border ="1">
+		<tr>
+			<td><a href = "#C1"><b>"Sharpen" Images</b></a></td>
+			<td><a href = "#C2"><b>Hybrid Images</b></a></td>
+			<td><a href = "#C3"><b>Gaussian and Laplacian Stacks </b></a></td>
+			<td><a href = "#C4"><b>Multiresolution Blending Images </b></a></td>
+		</tr>
+	</table>
+
+	<h2><a name = "C1">2 "Sharpen" Images </a></h2>
+	<font size=4><p>In this part, I sharpen some old photos by unsharp masking technique, which is to
+		subtract a blurred image from the original one. The examples below shows that with unsharp
+		masking, some details of the original figures are revealed. In the unsharp masking stage, I use 5*5 Gaussian filter with variation 4.
+	</p></font>
+
+
+	<div>
+	<table style = "width:100%;" border="1">
+		<tbody>
+		<tr>
+		<td><img src ="images/ww21.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/ww2_1_01.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/ww2_1_03.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/ww2_1_05.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/ww2_1_08.jpg"  title = "Example 1", style="width: 100%;"></td>
+		</tr>
+		<tr>
+		<td><center><b>The original image</b></center> </td>
+		<td><center><b>The sharpened image (alpha = 0.1)</b></center> </td>
+		<td><center><b>The sharpened image (alpha = 0.3)</b> </center></td>
+		<td><center><b>The sharpened image (alpha = 0.5)</b> </center></td>
+		<td><center><b>The sharpened image (alpha = 0.8)</b> </center></td>
+		</tr>
+
+		<tr>
+		<td><img src ="images/c4.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/c4_01.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/c4_03.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/c4_05.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/c4_08.jpg"  title = "Example 1", style="width: 100%;"></td>
+		</tr>
+		<tr>
+		<td><center><b>The original image</b></center> </td>
+		<td><center><b>The sharpened image (alpha = 0.1)</b></center> </td>
+		<td><center><b>The sharpened image (alpha = 0.3)</b> </center></td>
+		<td><center><b>The sharpened image (alpha = 0.5)</b> </center></td>
+		<td><center><b>The sharpened image (alpha = 0.8)</b> </center></td>
+		</tr>
+
+
+	</tbody>
+	</table>
+	</div>
+
+
+	<h2><a name = "C2">3 Hybrid Images </a></h2>
+	<font size=4><p>In this part, the hybrid images are implemented. The property of the hybrid images is that when we 
+		look at the image far, our eyes will focus on the low frequency image, and when we are close, our eyes will focus on 
+		the high frequency image. When we construct the hybrid images, we choose two different
+		images, and align them to make the interesting part be at the center. Then we use the Gaussian and Laplacian filters to 
+		build the high frequency and low frequency images. Meanwhile, we cut some frequency from the filter results. The cutting
+		frequency is achieved by trial and error. Finally, we combine them together.   
+	</p></font>
+	<h3> <p>My Favourite Result</p></h3>
+	<p>My favourite result is to combine myself photo with a dog's photo. See them below:</p>
+	<table style = "width:100%;" border="1">
+		<tbody>
+		<tr>
+		<td><img src ="images/me_res2.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/dog7.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/medog.jpg"  title = "Example 1", style="width: 100%;"></td>
+		</tr>
+		<tr>
+		<td><center><b>My original image</b></center> </td>
+		<td><center><b>Dog's original image</b></center> </td>
+		<td><center><b>The hybrid image</b> </center></td>
+		</tr>
+		</tbody>
+	</table>
+	<p>
+	The FFT results of the images are shown below:
+	</p>
+	<table style = "width:100%;" border="1">
+		<tbody>
+		<tr>
+		<td><img src ="images/me_res2.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/dog7.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/me_filter.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/dog_filter.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/medog.jpg"  title = "Example 1", style="width: 100%;"></td>
+		</tr>
+		<tr>
+		<td><center><b>My original image</b></center> </td>
+		<td><center><b>Dog's original image</b></center> </td>
+		<td><center><b>My high frequency image</b></center> </td>
+		<td><center><b>Dog's low frequency image</b></center> </td>
+		<td><center><b>The hybrid image</b> </center></td>
+		</tr>
+		<tr>
+		<td><img src ="images/me_dog_FT.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/me_dog_FT2_dog.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/me_dog_FT_me_filter.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/me_dog_FT_dog_filter.jpg"  title = "Example 1", style="width: 100%;"></td>
+		<td><img src ="images/me_dog_FT2_hybrid.jpg"  title = "Example 1", style="width: 100%;"></td>
+		</tr>
+		<tr>
+		<td><center><b>My original image's FFT</b></center> </td>
+		<td><center><b>Dog's original image's FFT</b></center> </td>
+		<td><center><b>My high frequency image's FFT</b></center> </td>
+		<td><center><b>Dog's low frequency image's FFT</b></center> </td>
+		<td><center><b>The hybrid image's FFT</b> </center></td>
+		</tr>
+		</tbody>
+	</table>
+	<p>The cutting frequency for the low frequency image is: 50000, and for the high frequency image is: 1000. </p>
+
+	<h3> <p>More Result</p></h3>
+	<p> The hybrid image which combines dog and cat is not so good. It looks like koala. I think the main reason caused this unsuccessive image is that I align their eyes at almost the same location. Thus, it's hard to separate them by different viewing distance.
+	</p>
+	<table style = "width:70%;" border="1">
+		<tbody>
+		<tr>
+		<td><img src ="images/sub.jpg"  title = "Example 3", style="width:350px;"></td>
+		<td><img src ="images/shark2.jpg"  title = "Example 3", style="width:350px;"></td>
+		<td><img src ="images/sub-fish.jpg"  title = "Example 3", style="width:350px;"></td>
+		</tr>
+		<tr>
+		<td><center><b>Original image</b></center> </td>
+		<td><center><b>Original image</b></center> </td>
+		<td><center><b>The hybrid image</b> </center></td>
+		</tr>
+
+		<tr>
+		<td><img src ="images/cat1.jpg"  title = "Example 4", style="width:350px;"></td>
+		<td><img src ="images/dog7.jpg"  title = "Example 4", style="width:350px;"></td>
+		<td><img src ="images/cat_dog.jpg"  title = "Example 4", style="width:350px;"></td>
+		</tr>
+		<tr>
+		<td><center><b>Original image</b></center> </td>
+		<td><center><b>Original image</b></center> </td>
+		<td><center><b>The hybrid image</b> </center></td>
+		</tr>
+		</tbody>
+	</table>
+
+	<h3> <p>Bells and Whistles</p></h3>
+	In this part the color hybrid images are implemented. The hybrid photo with submarine and shake is good, but the other two are not so good compared with the gray ones. I think the reason that the color hybrid image is harder to achieve is the two input images have different color, and mix their color would make weird new colors in the image.
+	<table style = "width:70%;" border="1">
+		<tbody>
+		<tr>
+		<td><img src ="images/cat_dog2.jpg"  title = "Example 3", style="width:350px;"></td>
+		<td><img src ="images/color_me_dog.jpg"  title = "Example 3", style="width:350px;"></td>
+		<td><img src ="images/fish-sub-color.jpg"  title = "Example 3", style="width:350px;"></td>
+		</tr>
+		<tr>
+		<td><center><b>The cat-dog image</b></center> </td>
+		<td><center><b>The me-dog image</b></center> </td>
+		<td><center><b>The submarine-fish image</b> </center></td>
+		</tr>
+		<tbody>
+	</table>
+
+	<h2><a name = "C3">4 Gaussian and Laplacian Stacks </a></h2>
+	<font size=4><p>In this part, Gaussian and Laplacian stacks are implemented. I use this stack to see the Mona Lisa and Lincoln & Gala.
+		<img src ="images/mona.jpg"  title = "Example 1", style="width: 80%;">
+		<img src ="images/lincon.jpg"  title = "Example 1", style="width: 80%;">
+	</p>
+	<p>
+	From the stacks we can find, for Mona Lisa, she seems to be not at smile from the blurred image, but she seems to simle in the sharpened images. For the Lincoln & Gala, the blurred one represents the Lincoln, and the sharpened one reavels the naked woman.
+	</p></font>
+
+	The Gaussian and Laplacian stacks for my favourite image is:
+	<img src ="images/medog2.jpg"  title = "Example 1", style="width: 80%;">
+	<p>
+	The stacks illustrate that for the blurred one the dog component reveals, and for the sharpened one my figure reveals.</p>
+
+	<h2><a name = "C4">5 Multiresolution Blending Images </a></h2>
+	<font size=4><p>In this part, the multiresolution blending images are shown. In order to do the multiresolution blending, the Gaussian and Laplacian stacks are constructed, and we blending each level with another Gaussian pyrimad. Then use the new stacks to generate the blending images. In the process, I use the 9 level stacks. My favourite image is:
+	</p></font>
+	<table style = "width:70%;" border="1">
+		<tbody>
+		<tr>
+		<td><img src ="images/nkl.jpg"  title = "Example 5", style="width:350px;"></td>
+		<td><img src ="images/mg.jpg"  title = "Example 5", style="width:350px;"></td>
+		<td><img src ="images/nklmg.jpg"  title = "Example 3", style="width:350px;"></td>
+		</tr>
+		<tr>
+		<td><center><b>The image of a nuclear weapon</b></center> </td>
+		<td><center><b>The image of a mushroom</b></center> </td>
+		<td><center><b>The multiresolution blending image</b> </center></td>
+		</tr>
+		<tbody>
+	</table>
+	<p>
+	From the blending image we can find that the multiresolution blending can keep both the low frequency property as well as the high one. The details of the blending can be seen:
+	</p>
+	<img src ="images/blending.png"  title = "blending method", style="width:100%;">
+	<p> The other blending images are: </p>
+	<table style = "width:60%;" border="1">
+		<tbody>
+			<tr>
+		<td><center><img src ="images/glass.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		<td><center><img src ="images/sun.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		<td><center><img src ="images/sun_glass.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		</tr>
+		<tr>
+		<td><center><b>The image of a lawn</b></center> </td>
+		<td><center><b>The image of a sun</b></center> </td>
+		<td><center><b>The multiresolution blending image</b> </center></td>
+		</tr>
+
+		<tr>
+		<td><center><img src ="images/hands.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		<td><center><img src ="images/glax.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		<td><center><img src ="images/hands_glax.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		</tr>
+		<tr>
+		<td><center><b>The image of a hands</b></center> </td>
+		<td><center><b>The image of a galaxy</b></center> </td>
+		<td><center><b>The multiresolution blending image</b> </center></td>
+		</tr>
+
+		<tr>
+		<td><center><img src ="images/basketball.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		<td><center><img src ="images/water.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		<td><center><img src ="images/wb.jpg"  title = "Example 6", style="width:350px;"></center></td>
+		</tr>
+		<tr>
+		<td><center><b>The image of a basketball</b></center> </td>
+		<td><center><b>The image of a watermelon</b></center> </td>
+		<td><center><b>The multiresolution blending image</b> </center></td>
+		</tr>
+
+		<tr>
+		<td><center><img src ="images/jjs.jpg"  title = "Example 6", style="width:250px;"></center></td>
+		<td><center><img src ="images/mzd.jpg"  title = "Example 6", style="width:250px;"></center></td>
+		<td><center><img src ="images/people2.jpg"  title = "Example 6", style="width:250px;"></center></td>
+		</tr>
+		<tr>
+		<td><center><b>The image of a Jieshi Jiang (former leader of ROC)</b></center> </td>
+		<td><center><b>The image of a Zedong Mao (former leader of PRC)</b></center> </td>
+		<td><center><b>The multiresolution blending image</b> </center></td>
+		</tr>
+		<tbody>
+	</table>
+	<p> The multiresolution blending of two people is not so good, because 1) their hair color is quite different; 2) the angle of their face is not the same; and 3) one of them is fatter than another one. I think the key point for multiresolution blending is to find two things which have similar shape and align them good.
+	</p>
+
+	<h2> 5 Summary</h2>
+	In this project, I try to use the frequency analysis tool to reconstruct the images. I think the most interesting part is multiresolution, since it's very easy to combine two totally different things together with keeping their high and low frequency details. For the hybrid images it's a little bit difficult to get the good results, since sometimes the quality depends on how we align the two images and what cutting frequency we choose.
+	
+</body>
+
+</html>

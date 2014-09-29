@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>project2: Peng Xue, Haoyu Chen</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="bg">
+<h1><center>CS194-26: Image Manipulation and Computational Photography</center></h1>
+<h1><center>IBuilding a Pinhole Camera</center></h1>
+<h1><center>Peng Xue<br>Haoyu Chen</center></h1>
+<h2>Set up</h2>
+    <table class="pics">
+    <tbody>
+        <tr>
+            <td><img src="images/setup1.jpg" style="width:400px;"><br></td>
+            <td><img src="images/setup2.jpg" style="width:400px;"><br></td>
+        </tr>
+    </tbody>
+    </table> 
+<p>Placeholder</p>
+<h2>Pictures</h2>
+    <table class="pics">
+    <tbody>
+        <tr>
+            <td><img src="images/IMG_7950.JPG" style="width:200px;"><br></td>
+            <td><img src="images/IMG_7951.JPG" style="width:200px;"><br></td>
+            <td><img src="images/IMG_7952.JPG" style="width:200px;"><br></td>
+        </tr>
+        <tr>
+            <td><img src="images/IMG_7859.JPG" style="width:200px;"><br></td>
+            <td><img src="images/IMG_7856.JPG" style="width:200px;"><br></td>
+            <td><img src="images/IMG_7868.JPG" style="width:200px;"><br></td>
+        </tr>
+	<tr>
+	
+	    <td><p>0.1 mm diameter</p></td>
+	    <td><p>3 mm diameter</p></td>
+	    <td><p>5 mm diameter</p></td>
+	</tr>
+    </tbody>
+    </table> 
+<p>Placeholder</p>
+<h2>Adiitional Pictures</h2>
+    <table class="pics">
+    <tbody>
+        <tr>
+            <td><img src="images/IMG_7900.JPG" style="width:200px;"><br></td>
+            <td><img src="images/IMG_7825.JPG" style="width:200px;"><br></td>
+        </tr>
+        <tr>
+            <td><img src="images/IMG_7912.JPG" style="width:200px;"><br></td>
+            <td><img src="images/IMG_7935.JPG" style="width:200px;"><br></td>
+        </tr>
+    </tbody>
+    </table> 
+<h2>Bells and Whistles</h2>
+<p>light painting</p>
+    <table class="pics">
+    <tbody>
+        <tr>
+            <td><img src="images/IMG_7921.JPG" style="width:200px;"><br></td>
+            <td><img src="images/IMG_7923.JPG" style="width:200px;"><br></td>
+            <td><img src="images/IMG_7917.JPG" style="width:200px;"><br></td>
+        </tr>
+		
+    </tbody>
+    </table> 
+<p><b>Stereo pinhole camera & 3-D reconstruction<b></p>
+	<p> We also implement the stereo pinhole camera. But we failed to
+	get the color glasses to make the "real" anaglyph image. However, 
+	we use the left and right photo to estimate the disparity matrix,
+	and reconstructed the 3-D structure.</p>
+	<p> There are four steps to get the 3-D structure. Firstly the segment 
+		analysis is done to separate the photo into some connected region
+		by their color. Secondly the disparity is estimated. Thirdly the
+		disparity is smoothed by the segment, i.e. make the disparities in 
+		a plain be close. Finally, we use the formula z=f*B/d to calculate
+		the depths of each point.</p>
+	<p> The figures below reveals the each step for our model.</p>
+	<img src="images/process_disparity.jpg" style="width:1000px;">
+	<p> The reconstructed 3-D model is below.</p>
+    <table class="pics">
+    <tbody>
+        <tr>
+            <td><img src="images/3d1.jpg" style="width:400px;"><br></td>
+            <td><img src="images/3d2.jpg" style="width:400px;"><br></td>
+		</tr>
+		<tr>
+            <td><img src="images/3d3.jpg" style="width:400px;"><br></td>
+	    <td><img src="images/3d4.jpg" style="width:400px;"><br></td>
+        </tr>
+    </tbody>
+    </table> 
+</div>
+</body>
+</html>
